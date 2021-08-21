@@ -6,7 +6,7 @@ const config: MysqlConnectionOptions = {
   port: 3306,
   username: 'root',
   password: '',
-  database: 'nestjs',
+  database: 'appexchange',
   entities: ['dist/src/**/*.entity.js'],
   synchronize: false, //Criando o banco automatico ou não no entity
   migrations: ['dist/src/database/migrations/*.js'],

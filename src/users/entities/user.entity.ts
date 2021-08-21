@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { RoleUser } from 'src/roles/entities/roleUsers.entity';
+
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -20,4 +29,17 @@ export class User {
     nullable: false,
   })
   password: string;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  updateAt: Date;
+
+  @OneToMany((type) => RoleUser, (roleUser) => roleUser.user)
+  role: RoleUser[];
 }

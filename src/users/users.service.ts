@@ -21,11 +21,9 @@ export class UsersService {
   }
 
   async verifyIfExistsEmail(email: string): Promise<void> {
-    const userExists = await this.usersRepository.find({
+    const userExists = await this.usersRepository.findOne({
       email,
     });
-
-    console.log(userExists);
 
     if (userExists) {
       throw new HttpException('Já existe esse email', 400);
