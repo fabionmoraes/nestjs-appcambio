@@ -1,4 +1,5 @@
 import { RoleUser } from 'src/roles/entities/roleUsers.entity';
+import { Store } from 'src/stores/entities/store.entity';
 
 import {
   Column,
@@ -42,4 +43,7 @@ export class User {
 
   @OneToMany((type) => RoleUser, (roleUser) => roleUser.user)
   role: RoleUser[];
+
+  @OneToMany((type) => Store, (store) => store.user)
+  stores: Store[];
 }
