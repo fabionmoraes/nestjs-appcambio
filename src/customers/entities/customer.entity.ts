@@ -44,17 +44,17 @@ export class Customer {
   @Column({ default: true })
   active: boolean;
 
-  @ManyToOne(type => User, user => user.customerCreated, {
+  @ManyToOne(() => User, user => user.customerCreated, {
     onDelete: 'SET NULL',
   })
   user_created: User;
 
-  @ManyToOne(type => User, user => user.customerUpdated, {
+  @ManyToOne(() => User, user => user.customerUpdated, {
     onDelete: 'SET NULL',
   })
   user_updated: User;
 
-  @ManyToOne(type => Store, store => store, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Store, store => store.customers, { onDelete: 'SET NULL' })
   store: Store;
 
   @CreateDateColumn({

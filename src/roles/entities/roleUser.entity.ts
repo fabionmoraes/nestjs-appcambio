@@ -8,15 +8,15 @@ import {
 } from 'typeorm';
 import { Role } from './role.entity';
 
-@Entity('roleUsers')
+@Entity('role_users')
 export class RoleUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Role, role => role.roleUsers)
+  @ManyToOne(() => Role, role => role.roleUsers)
   role: Role;
 
-  @ManyToOne(type => User, user => user.role)
+  @ManyToOne(() => User, user => user.role)
   user: User;
 
   @CreateDateColumn({

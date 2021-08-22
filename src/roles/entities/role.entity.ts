@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { RoleUser } from './roleUsers.entity';
+import { RoleUser } from './roleuser.entity';
 
 @Entity('roles')
 export class Role {
@@ -26,6 +26,6 @@ export class Role {
   })
   updateAt: Date;
 
-  @OneToMany(type => RoleUser, roleUser => roleUser.role)
+  @OneToMany(() => RoleUser, roleUser => roleUser.role)
   roleUsers: RoleUser[];
 }

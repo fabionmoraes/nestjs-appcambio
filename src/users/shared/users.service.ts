@@ -1,9 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
+
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -11,9 +13,15 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const newUser = this.usersRepository.create(createUserDto);
+      const password = await bcrypt.hash(createUserDto.password, 15);
+      const user = {
+        ...createUserDto,
+        password,
+      };
+
+      const newUser = this.usersRepository.create(user);
       return this.usersRepository.save(newUser);
     } catch (err) {
       throw new HttpException('error', 400);
@@ -30,8 +38,12 @@ export class UsersService {
     }
   }
 
+  async getByEmail(email: string) {
+    return await this.usersRepository.findOne({ email });
+  }
+
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find();
+    const users = await this.usersRepository.find({ relations: ['role'] });
     return users;
   }
 
