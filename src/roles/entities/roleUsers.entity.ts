@@ -13,10 +13,10 @@ export class RoleUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne((type) => Role, (role) => role.roleUsers)
+  @ManyToOne(type => Role, role => role.roleUsers)
   role: Role;
 
-  @ManyToOne((type) => User, (user) => user.role)
+  @ManyToOne(type => User, user => user.role)
   user: User;
 
   @CreateDateColumn({

@@ -1,3 +1,4 @@
+import { Customer } from 'src/customers/entities/customer.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
@@ -6,6 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('stores')
@@ -68,6 +70,9 @@ export class Store {
   })
   updateAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.stores)
+  @ManyToOne(type => User, user => user.stores)
   user: User;
+
+  @OneToMany(type => Customer, customer => customer.store)
+  customers: Customer[];
 }

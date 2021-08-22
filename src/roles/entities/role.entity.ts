@@ -26,6 +26,6 @@ export class Role {
   })
   updateAt: Date;
 
-  @OneToMany((type) => RoleUser, (roleUser) => roleUser.role)
+  @OneToMany(type => RoleUser, roleUser => roleUser.role)
   roleUsers: RoleUser[];
 }
