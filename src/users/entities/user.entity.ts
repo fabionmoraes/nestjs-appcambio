@@ -1,7 +1,3 @@
-import { Customer } from 'src/customers/entities/customer.entity';
-import { RoleUser } from 'src/roles/entities/roleuser.entity';
-import { Store } from 'src/stores/entities/store.entity';
-
 import {
   Column,
   Entity,
@@ -10,7 +6,14 @@ import {
   UpdateDateColumn,
   OneToMany,
   OneToOne,
+  BeforeInsert,
 } from 'typeorm';
+
+import * as bcrypt from 'bcrypt';
+
+import { Customer } from 'src/customers/entities/customer.entity';
+import { RoleUser } from 'src/roles/entities/roleuser.entity';
+import { Store } from 'src/stores/entities/store.entity';
 
 @Entity('users')
 export class User {
@@ -54,4 +57,10 @@ export class User {
 
   @OneToOne(() => Customer, customer => customer.user_updated)
   customerUpdated: Customer;
+
+  @BeforeInsert()
+  async setPassword(password: string) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(password || this.password, salt);
+  }
 }

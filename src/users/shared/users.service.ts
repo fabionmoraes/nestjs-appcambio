@@ -1,11 +1,15 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
-import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user.entity';
+
+interface ICreateUser {
+  name: string;
+  email: string;
+  password: string;
+}
 
 @Injectable()
 export class UsersService {
@@ -13,15 +17,9 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(create: ICreateUser): Promise<User> {
     try {
-      const password = await bcrypt.hash(createUserDto.password, 15);
-      const user = {
-        ...createUserDto,
-        password,
-      };
-
-      const newUser = this.usersRepository.create(user);
+      const newUser = this.usersRepository.create(create);
       return this.usersRepository.save(newUser);
     } catch (err) {
       throw new HttpException('error', 400);
