@@ -7,6 +7,7 @@ import {
   OneToMany,
   OneToOne,
   BeforeInsert,
+  ManyToOne,
 } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
@@ -14,6 +15,7 @@ import * as bcrypt from 'bcrypt';
 import { Customer } from 'src/modules/customers/entities/customer.entity';
 import { RoleUser } from 'src/modules/roles/entities/roleuser.entity';
 import { Store } from 'src/modules/stores/entities/store.entity';
+import { File } from 'src/modules/files/entities/file.entity';
 
 @Entity('users')
 export class User {
@@ -57,6 +59,9 @@ export class User {
 
   @OneToOne(() => Customer, customer => customer.user_updated)
   customerUpdated: Customer;
+
+  @ManyToOne(() => File, file => file.user, { onDelete: 'SET NULL' })
+  file: File;
 
   @BeforeInsert()
   async setPassword(password: string) {

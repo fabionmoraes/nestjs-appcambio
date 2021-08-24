@@ -7,6 +7,7 @@ import { RolesModule } from './modules/roles/roles.module';
 import { StoresModule } from './modules/stores/stores.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './modules/auth/auth.module';
     StoresModule,
     CustomersModule,
     AuthModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],

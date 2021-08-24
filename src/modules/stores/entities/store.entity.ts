@@ -10,6 +10,8 @@ import {
   OneToMany,
 } from 'typeorm';
 
+import { File } from 'src/modules/files/entities/file.entity';
+
 @Entity('stores')
 export class Store {
   @PrimaryGeneratedColumn('uuid')
@@ -70,9 +72,12 @@ export class Store {
   })
   updateAt: Date;
 
-  @ManyToOne(type => User, user => user.stores)
+  @ManyToOne(() => User, user => user.stores)
   user: User;
 
-  @OneToMany(type => Customer, customer => customer.store)
+  @OneToMany(() => Customer, customer => customer.store)
   customers: Customer[];
+
+  @ManyToOne(() => File, file => file.store, { onDelete: 'SET NULL' })
+  file: File;
 }
