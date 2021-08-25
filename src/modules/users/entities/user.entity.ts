@@ -13,7 +13,7 @@ import {
 import * as bcrypt from 'bcrypt';
 
 import { Customer } from 'src/modules/customers/entities/customer.entity';
-import { RoleUser } from 'src/modules/roles/entities/roleuser.entity';
+import { Role } from 'src/modules/roles/entities/role.entity';
 import { Store } from 'src/modules/stores/entities/store.entity';
 import { File } from 'src/modules/files/entities/file.entity';
 
@@ -38,21 +38,11 @@ export class User {
   })
   password: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
-  createdAt: Date;
+  @ManyToOne(() => Role, role => role.user)
+  role: Role;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
-  updateAt: Date;
-
-  @OneToMany(() => RoleUser, roleUser => roleUser.user)
-  role: RoleUser[];
-
-  @OneToMany(() => Store, store => store.user)
-  stores: Store[];
+  @ManyToOne(() => Store, store => store.user)
+  store: Store;
 
   @OneToOne(() => Customer, customer => customer.user_created)
   customerCreated: Customer;
@@ -62,6 +52,16 @@ export class User {
 
   @ManyToOne(() => File, file => file.user, { onDelete: 'SET NULL' })
   file: File;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  updated_at: Date;
 
   @BeforeInsert()
   async setPassword(password: string) {

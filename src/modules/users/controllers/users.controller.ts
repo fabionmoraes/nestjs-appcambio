@@ -24,18 +24,17 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { UsersService } from '../services/users.service';
-import { RoleUsersService } from '../../roles/services/roleUsers.service';
-import { RolesService } from '../../roles/services/roles.service';
+import { RolesService } from 'src/modules/roles/services/roles.service';
 
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly roleUserService: RoleUsersService,
-    private readonly roleService: RolesService,
+    private readonly rolesservice: RolesService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiCreatedResponse({
     description: 'Criado com sucesso',
@@ -45,15 +44,12 @@ export class UsersController {
   })
   @UsePipes(new ValidationPipe())
   async create(@Body() createUserDto: CreateUserDto) {
-    const role = await this.roleService.findOne(2);
-
+    const role = await this.rolesservice.findOne(createUserDto.role_id);
     await this.usersService.verifyIfExistsEmail(createUserDto.email);
 
-    const user = await this.usersService.create(createUserDto);
+    const user = await this.usersService.create({ ...createUserDto, role });
 
-    this.roleUserService.create({ role, user });
-
-    return this.usersService.create(user);
+    return user;
   }
 
   @UseGuards(JwtAuthGuard)

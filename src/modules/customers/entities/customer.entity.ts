@@ -60,10 +60,10 @@ export class Customer {
   @CreateDateColumn({
     type: 'timestamp',
   })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
   })
-  updateAt: Date;
+  updated_at: Date;
 }

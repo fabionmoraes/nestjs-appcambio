@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 import { File } from 'src/modules/files/entities/file.entity';
@@ -62,17 +63,7 @@ export class Store {
   })
   active: boolean;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
-  updateAt: Date;
-
-  @ManyToOne(() => User, user => user.stores)
+  @OneToOne(() => User, user => user.store)
   user: User;
 
   @OneToMany(() => Customer, customer => customer.store)
@@ -80,4 +71,14 @@ export class Store {
 
   @ManyToOne(() => File, file => file.store, { onDelete: 'SET NULL' })
   file: File;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  updated_at: Date;
 }

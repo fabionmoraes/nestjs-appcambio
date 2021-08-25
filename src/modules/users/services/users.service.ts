@@ -4,11 +4,15 @@ import { Repository } from 'typeorm';
 
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user.entity';
+import { Role } from 'src/modules/roles/entities/role.entity';
+import { Store } from 'src/modules/stores/entities/store.entity';
 
 interface ICreateUser {
   name: string;
   email: string;
   password: string;
+  role: Role;
+  store?: Store;
 }
 
 @Injectable()
@@ -20,7 +24,9 @@ export class UsersService {
   async create(create: ICreateUser): Promise<User> {
     try {
       const newUser = this.userRepository.create(create);
-      return this.userRepository.save(newUser);
+      const user = await this.userRepository.save(newUser);
+      delete user.password;
+      return user;
     } catch (err) {
       throw new HttpException('error', 400);
     }
@@ -41,7 +47,9 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    const users = await this.userRepository.find({ relations: ['role'] });
+    const users = await this.userRepository.find({
+      relations: ['role', 'store'],
+    });
     return users;
   }
 

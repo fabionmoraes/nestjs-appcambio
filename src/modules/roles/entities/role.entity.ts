@@ -1,3 +1,4 @@
+import { User } from 'src/modules/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -5,8 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
-import { RoleUser } from './roleuser.entity';
 
 @Entity('roles')
 export class Role {
@@ -16,16 +17,16 @@ export class Role {
   @Column()
   name: string;
 
+  @OneToOne(() => User, user => user.role)
+  user: User;
+
   @CreateDateColumn({
     type: 'timestamp',
   })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
   })
-  updateAt: Date;
-
-  @OneToMany(() => RoleUser, roleUser => roleUser.role)
-  roleUsers: RoleUser[];
+  updated_at: Date;
 }
