@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from 'src/modules/auth/shared/jwt-auth.guard';
+import { Roles } from 'src/validation/roles.decorator';
 
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -35,6 +36,7 @@ export class UsersController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
+  @Roles('admin')
   @Post()
   @ApiCreatedResponse({
     description: 'Criado com sucesso',
@@ -81,4 +83,7 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
+}
+function CurrentUser() {
+  throw new Error('Function not implemented.');
 }

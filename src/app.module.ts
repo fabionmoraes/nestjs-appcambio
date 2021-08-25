@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config from '../ormconfig';
 
@@ -8,6 +9,9 @@ import { StoresModule } from './modules/stores/stores.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
+import { RolesGuard } from './validation/roles.guard';
+import { CoinsModule } from './modules/coins/coins.module';
+import { SalesModule } from './modules/sales/sales.module';
 
 @Module({
   imports: [
@@ -18,8 +22,15 @@ import { FilesModule } from './modules/files/files.module';
     CustomersModule,
     AuthModule,
     FilesModule,
+    CoinsModule,
+    SalesModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -1,5 +1,3 @@
-import { Customer } from 'src/modules/customers/entities/customer.entity';
-import { User } from 'src/modules/users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -9,9 +7,13 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  DeleteDateColumn,
 } from 'typeorm';
 
 import { File } from 'src/modules/files/entities/file.entity';
+import { Sale } from 'src/modules/sales/entities/sales.entity';
+import { Customer } from 'src/modules/customers/entities/customer.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('stores')
 export class Store {
@@ -81,4 +83,10 @@ export class Store {
     type: 'timestamp',
   })
   updated_at: Date;
+
+  @OneToMany(() => Sale, sale => sale)
+  sales: Sale[];
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
 }

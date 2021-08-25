@@ -55,7 +55,9 @@ export class UsersService {
 
   async findOne(id: number): Promise<User> {
     try {
-      const user = await this.userRepository.findOneOrFail(id);
+      const user = await this.userRepository.findOneOrFail(id, {
+        relations: ['role', 'store'],
+      });
 
       return user;
     } catch (err) {

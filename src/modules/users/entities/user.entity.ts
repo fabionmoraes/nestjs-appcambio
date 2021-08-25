@@ -16,6 +16,7 @@ import { Customer } from 'src/modules/customers/entities/customer.entity';
 import { Role } from 'src/modules/roles/entities/role.entity';
 import { Store } from 'src/modules/stores/entities/store.entity';
 import { File } from 'src/modules/files/entities/file.entity';
+import { Sale } from 'src/modules/sales/entities/sales.entity';
 
 @Entity('users')
 export class User {
@@ -62,6 +63,9 @@ export class User {
     type: 'timestamp',
   })
   updated_at: Date;
+
+  @OneToMany(() => Sale, sale => sale.user)
+  sales: Sale;
 
   @BeforeInsert()
   async setPassword(password: string) {
